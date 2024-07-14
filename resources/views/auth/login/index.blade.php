@@ -22,7 +22,7 @@
 
                 <div class="input-group mb-5 d-flex justify-content-between">
                     <div class="forgot">
-                        <small><a href="{{ route('register_form') }}">Register</a></small>
+                        <small><a href="{{ route('register') }}">Register</a></small>
                     </div>
                 </div>
 

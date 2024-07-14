@@ -67,6 +67,8 @@
     <script src="https://cdn.datatables.net/v/bs4/dt-2.0.8/r-3.0.2/datatables.min.js"></script>
     {{-- sweetalert2 --}}
     <script src="{{ asset('js/sweetalert2/sweetalert2.all.min.js') }}?v={{ time() }}"></script>
+    {{-- axios --}}
+    <script src="{{ asset('js/axios/axios.min.js') }}?v={{ time() }}"></script>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}?v={{ time() }}"></script>

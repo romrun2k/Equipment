@@ -1,8 +1,7 @@
 <script>
-    function login() {
+    let login = () => {
         let emailValue = $('#email').val()
         let passwordValue = $('#password').val()
-
 
         if (emailValue === '') {
             $('#error-email').show();
@@ -17,7 +16,7 @@
         let formData = $('#form_login').serialize();
         $.ajax({
             type: "post",
-            url: "{{ route('check_login') }}",
+            url: "{{ url('login') }}",
             data: formData,
             dataType: "json",
             success: function(response) {
@@ -28,15 +27,14 @@
                         icon: 'error',
                         confirmButtonText: 'ปิด'
                     })
-                } else if (response.data == 'login success') {
+                } else if (response.data == 'success') {
                     if(response.role == 'user') {
-                        window.location.href = "/orderList"
+                        window.location.href = "/orders"
                     } else {
-                        window.location.href = "/employee"
+                        window.location.href = "/employees"
                     }
                 }
             },
         });
-
     }
 </script>

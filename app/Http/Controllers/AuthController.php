@@ -17,10 +17,9 @@ class AuthController extends Controller
         return view('auth.login.index');
     }
 
-    public function check_login(Request $request)
+    public function loginStore(Request $request)
     {
         try {
-
             $credentials = [
                 'email' => $request->email,
                 'password' => $request->password,
@@ -29,7 +28,7 @@ class AuthController extends Controller
             if (Auth::attempt($credentials)) {
                 $response = [
                     'status' => true,
-                    'data' => 'login success',
+                    'data' => 'success',
                     'role' => Auth()->user()->role
                 ];
 
@@ -57,12 +56,12 @@ class AuthController extends Controller
         return redirect('/');
     }
 
-    public function registerForm(Request $request)
+    public function register(Request $request)
     {
         return view('auth.register.index');
     }
 
-    public function register(Request $request)
+    public function store(Request $request)
     {
         try {
 

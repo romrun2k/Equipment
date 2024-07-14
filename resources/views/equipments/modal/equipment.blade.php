@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="equipmentModal" tabindex="-1" aria-labelledby="equipmentModalLabel" aria-hidden="true">
+{{-- <div class="modal fade" id="equipmentModal" tabindex="-1" aria-labelledby="equipmentModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -41,4 +41,30 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
+
+<x-modal :id="$idModal" :title="$idModal" :footer="$btn">
+    <form id="equipmentForm">
+        @csrf
+        <div class="form-group">
+            <label for="equipment_name" class="col-form-label">Equipment:</label>
+            <input type="text" class="form-control" name="name" id="equipment_name">
+        </div>
+
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Example select</label>
+            <select class="form-control" name="type" id="equipment_type">
+                <option value="Monitor">Monitor</option>
+                <option value="Keyboard">Keyboard</option>
+                <option value="Mouse">Mouse</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="equipment_price" class="col-form-label">Price:</label>
+            <input type="number" name="price" value="0" min="0" class="form-control" id="equipment_price">
+        </div>
+
+        <input type="hidden" name="hd_code" id="hd_code">
+    </form>
+</x-modal>

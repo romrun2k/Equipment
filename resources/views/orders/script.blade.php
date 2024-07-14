@@ -1,6 +1,6 @@
 <script>
     let tbl_odrer
-    let monitor = @json($monitor);
+    let monitor = @json($monitors);
 
     // setup option monitor
     let keys = Object.keys(monitor);
@@ -20,10 +20,7 @@
             searching: true,
             ordering: false,
             ajax: {
-                url: '/orderList/show',
-                data: function(d) {
-                    // d.date_number = $('#date_number').val();
-                },
+                url: '/orders',
             },
             pageLength: 50,
             columns: [{
@@ -65,15 +62,10 @@
 
         $.ajax({
             type: "get",
-            url: "{{ route('orderList.view_detail') }}",
-            data: {
-                code: code
-            },
+            url: "orders/" + code,
             dataType: "json",
             success: function(response) {
-
                 if (response.status) {
-
                     let data = response.data
                     let html = ''
 
@@ -129,7 +121,7 @@
 
         $.ajax({
             type: "post",
-            url: "/orderList",
+            url: "/orders",
             data: formData,
             dataType: "json",
             success: function(response) {
@@ -138,18 +130,22 @@
                     $('#orderForm')[0].reset();
                     $('#orderModal').modal('hide')
                     tbl_odrer.ajax.reload()
-
                 } else {
-
                     if (response.data === 'have_item') {
                         alert_swal('error', response.message);
                     } else {
                         alert_swal('error', 'เกิดข้อผิดพลาด');
                     }
-
                 }
             }
         });
 
+        // axios.post('/orders', formData)
+        // .then(response => {
+        //     console.log(response.data);
+        // })
+        // .catch(error => {
+        //     console.log(error);
+        // });
     }
 </script>

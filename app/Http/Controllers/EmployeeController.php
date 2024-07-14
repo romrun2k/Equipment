@@ -12,36 +12,34 @@ class EmployeeController extends Controller
 {
     public function index()
     {
-        return view('employee.index');
+        if (request()->ajax()) {
+            $query = User::whereNull('deleted_at')
+                ->whereRole('user')
+                ->select('code', 'name', 'email', 'id')
+                ->with('getTransactions:id,total_price,user_id')
+                ->orderBy('id', 'DESC')
+                ->get();
+
+            return DataTables::of($query)
+                ->addIndexColumn()
+                ->addColumn('total_price', function($q){
+                    $price = 0;
+
+                    if ($q->getTransactions) {
+                        $price = number_format($q->getTransactions->sum('total_price'), 2);
+                    }
+
+                    return $price;
+                })
+                ->toJson();
+        }
+        return view('employees.index');
     }
 
-    public function show()
-    {
-        $query = User::whereNull('deleted_at')
-            ->whereRole('user')
-            ->select('code', 'name', 'email', 'id')
-            ->with('getTransactions:id,total_price,user_id')
-            ->orderBy('id', 'DESC')
-            ->get();
-
-        return DataTables::of($query)
-            ->addIndexColumn()
-            ->addColumn('total_price', function($q){
-                $price = 0;
-
-                if ($q->getTransactions) {
-                    $price = number_format($q->getTransactions->sum('total_price'), 2);
-                }
-
-                return $price;
-            })
-            ->toJson();
-    }
-
-    public function view_detail(Request $request)
+    public function show(Request $request)
     {
         try {
-            $user = User::whereCode($request->code)
+            $user = User::whereCode($request->employee)
                 ->select('id')
                 ->first();
 

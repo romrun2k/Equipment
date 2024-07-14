@@ -14,32 +14,31 @@ use DB;
 use Carbon\Carbon;
 
 
-class OrderListController extends Controller
+class OrderController extends Controller
 {
     public function index()
     {
-        $monitor = Equipments::forDropdown('Monitor');
-        $keyboard = Equipments::forDropdown('Keyboard');
-        $mouse = Equipments::forDropdown('Mouse');
+        $monitors = Equipments::forDropdown('Monitor');
+        $keyboards = Equipments::forDropdown('Keyboard');
+        $mouses = Equipments::forDropdown('Mouse');
 
-        return view('order_list.index', compact('monitor', 'keyboard', 'mouse'));
-    }
+        if (request()->ajax()) {
+            $query = Transactions::whereNull('deleted_at')
+                ->whereUser_id(Auth()->user()->id)
+                ->select('code', 'transaction_date', 'status', 'total_price')
+                ->orderBy('id', 'DESC')
+                ->get()
+                ->map(function($q) {
+                    $q->total_price = number_format($q->total_price, 2);
+                    return $q;
+                });
 
-    public function show()
-    {
-        $query = Transactions::whereNull('deleted_at')
-            ->whereUser_id(Auth()->user()->id)
-            ->select('code', 'transaction_date', 'status', 'total_price')
-            ->orderBy('id', 'DESC')
-            ->get()
-            ->map(function($q) {
-                $q->total_price = number_format($q->total_price, 2);
-                return $q;
-            });
+            return DataTables::of($query)
+                ->addIndexColumn()
+                ->toJson();
+        }
 
-        return DataTables::of($query)
-            ->addIndexColumn()
-            ->toJson();
+        return view('orders.index', compact('monitors', 'keyboards', 'mouses'));
     }
 
     private function checkEquipmentType($user_id, $type)
@@ -158,10 +157,10 @@ class OrderListController extends Controller
         return response()->json($response);
     }
 
-    public function view_detail(Request $request)
+    public function show(Request $request)
     {
         try {
-            $transaction = Transactions::whereCode($request->code)
+            $transaction = Transactions::whereCode($request->order)
                 ->select('id', 'other')
                 ->first();
 

@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-    <table id="tbl_employee" class="table table-striped table-bordered" style="width:100%">
+    <table id="employeesTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
                 <th class="text-center">No.</th>
@@ -22,12 +22,12 @@
             </tr>
         </thead>
         <tbody>
-        
+
         </tbody>
     </table>
-    @include('employee.modal.view_detail')
+    @include('employees.modal.view_detail')
 @endsection
 
 @section('script')
-    @include('employee.script')
+    @include('employees.script')
 @endsection

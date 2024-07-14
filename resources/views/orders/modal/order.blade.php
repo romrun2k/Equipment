@@ -20,7 +20,7 @@
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">Monitor</label>
                             <select class="form-control" name="equipment_monitor[]" id="equipment_monitor_1">
-                                @foreach ($monitor as $key => $item)
+                                @foreach ($monitors as $key => $item)
                                     <option value="{{ $key }}">{{ $item }}</option>
                                 @endforeach
                             </select>
@@ -30,7 +30,7 @@
                     <div class="form-group">
                         <label for="exampleFormControlSelect1">Keyboard</label>
                         <select class="form-control" name="equipment_keyboard" id="equipment_keyboard">
-                            @foreach ($keyboard as $key => $item)
+                            @foreach ($keyboards as $key => $item)
                                 <option value="{{ $key }}">{{ $item }}</option>
                             @endforeach
                         </select>
@@ -39,7 +39,7 @@
                     <div class="form-group">
                         <label for="exampleFormControlSelect1">Mouse</label>
                         <select class="form-control" name="equipment_mouse" id="equipment_mouse">
-                            @foreach ($mouse as $key => $item)
+                            @foreach ($mouses as $key => $item)
                                 <option value="{{ $key }}">{{ $item }}</option>
                             @endforeach
                         </select>

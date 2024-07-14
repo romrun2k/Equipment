@@ -13,21 +13,21 @@
 
         @if (Auth()->user()->role != 'admin')
             <li>
-                <a href="{{ url('orderList') }}" class="nav-link px-0 align-middle">
-                    <i class="bi bi-card-list"></i> <span class="ms-1 d-none d-sm-inline">Order List</span>
+                <a href="{{ url('orders') }}" class="nav-link px-0 align-middle">
+                    <i class="bi bi-card-list"></i> <span class="ms-1 d-none d-sm-inline">Orders</span>
                 </a>
             </li>
         @endif
 
         @if (Auth()->user()->role == 'admin')
             <li>
-                <a href="{{ url('employee') }}" class="nav-link px-0 align-middle">
-                    <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Employee</span>
+                <a href="{{ url('employees') }}" class="nav-link px-0 align-middle">
+                    <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Employees</span>
                 </a>
             </li>
 
             <li>
-                <a href="{{ url('master_quipment') }}" class="nav-link px-0 align-middle">
+                <a href="{{ url('quipments') }}" class="nav-link px-0 align-middle">
                     <i class="bi bi-display"></i> <span class="ms-1 d-none d-sm-inline">Equipment</span>
                 </a>
             </li>

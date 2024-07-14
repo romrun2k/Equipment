@@ -1,16 +1,13 @@
 <script>
-    let tbl_employee
+    let employeesTable
     $(document).ready(function() {
-        tbl_employee = $('#tbl_employee').DataTable({
+        employeesTable = $('#employeesTable').DataTable({
             processing: true,
             serverSide: true,
             searching: true,
             ordering: false,
             ajax: {
-                url: '/employee/show',
-                data: function(d) {
-                    // d.date_number = $('#date_number').val();
-                },
+                url: '/employees',
             },
             pageLength: 50,
             columns: [{
@@ -50,10 +47,7 @@
         $('#tbody_order').empty()
         $.ajax({
             type: "get",
-            url: "{{ route('employee.view_detail') }}",
-            data: {
-                code: code
-            },
+            url: "employees/" + code,
             dataType: "json",
             success: function(response) {
                 if (response.status) {

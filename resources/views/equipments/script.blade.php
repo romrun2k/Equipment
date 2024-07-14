@@ -1,18 +1,18 @@
 <script>
-    let tbl_equipment
+    //  ใส่ lang alaer
+    //  ทำ function valid
+
+    let equipmentsTable
     let mode
 
     $(document).ready(function() {
-        tbl_equipment = $('#tbl_equipment').DataTable({
+        equipmentsTable = $('#equipmentsTable').DataTable({
             processing: true,
             serverSide: true,
             searching: true,
             ordering: false,
             ajax: {
-                url: '/master_quipment/show',
-                data: function(d) {
-                    // d.date_number = $('#date_number').val();
-                },
+                url: '/quipments',
             },
             pageLength: 50,
             columns: [{
@@ -39,21 +39,21 @@
                     class: 'text-center',
                     render: function(data, type, row) {
                         let html = `
-                            <button type="button" class="btn btn-info" onclick="editData('${row.code}')"><i class="bi bi-pencil"></i> Edit</button>
-                            <button type="button" class="btn btn-danger" onclick="f_delete('${row.code}')"><i class="bi bi-trash"></i> Delete</button>
+                            <button type="button" class="btn btn-info" onclick="edit('${row.code}')"><i class="bi bi-pencil"></i> Edit</button>
+                            <button type="button" class="btn btn-danger" onclick="destroy('${row.code}')"><i class="bi bi-trash"></i> Delete</button>
                         `
                         return html
                     }
                 },
             ]
         })
-    });
 
-    let addModal = () => {
-        mode = 'save'
-        $('#equipmentForm')[0].reset();
-        $('#equipmentModal').modal('show')
-    }
+        $('#btnAddModal').click(function () {
+            mode = 'save'
+            $('#equipmentForm')[0].reset();
+            // $('#equipmentModal').modal('show')
+        })
+    });
 
     $('#btn_save').click(function(e) {
         e.preventDefault();
@@ -71,61 +71,53 @@
         }
 
         let formData = $('#equipmentForm').serialize();
+
         if (mode == 'save') {
-            save(formData)
+            store(formData)
         } else {
             update(formData)
         }
     });
 
-    let save = (formData) => {
-        $.ajax({
-            type: "post",
-            url: "/master_quipment",
-            data: formData,
-            dataType: "json",
-            success: function(response) {
-                if (response.status) {
-                    alert_swal('success', 'สำเร็จ')
+    let store = (formData) => {
+        axios.post('/quipments', formData)
+            .then(response => {
+                if (response.data) {
+                    console.log(response);
+                    alert_swal('success', "{{ __('status.success') }}")
                     $('#equipmentForm')[0].reset();
                     $('#equipmentModal').modal('hide')
-                    tbl_equipment.ajax.reload()
-
-                } else {
-                    alert_swal('error', 'เกิดข้อผิดพลาด');
+                    equipmentsTable.ajax.reload()
                 }
-            }
+            })
+            .catch(error => {
+                alert_swal('error', "{{ __('status.error') }}");
         });
     }
 
     let update = (formData) => {
         let hd_code = $('#hd_code').val()
-        $.ajax({
-            type: "put",
-            url: "/master_quipment/" + hd_code,
-            data: formData,
-            dataType: "json",
-            success: function(response) {
-                if (response.status) {
-                    alert_swal('success', 'สำเร็จ')
+
+        axios.put('/quipments/' + hd_code, formData)
+            .then(response => {
+                if (response.data) {
+                    alert_swal('success', "{{ __('status.success') }}")
                     $('#equipmentForm')[0].reset();
                     $('#equipmentModal').modal('hide')
-                    tbl_equipment.ajax.reload()
-                } else {
-                    alert_swal('error', 'เกิดข้อผิดพลาด');
+                    equipmentsTable.ajax.reload()
                 }
-            }
+            })
+            .catch(error => {
+                alert_swal('error', "{{ __('status.error') }}");
         });
+
     }
 
-    let editData = (code) => {
+    let edit = (code) => {
         mode = 'edit'
         $.ajax({
             type: "get",
-            url: "{{ route('master_quipment.editData') }}",
-            data: {
-                code: code
-            },
+            url: "/quipments/" + code + "/edit",
             dataType: "json",
             success: function(response) {
                 if (response.status) {
@@ -135,16 +127,14 @@
                     $('#equipment_name').val(data.name)
                     $('#equipment_type').val(data.type).trigger('change')
                     $('#equipmentModal').modal('show')
-
                 } else {
-                    alert_swal('error', 'เกิดข้อผิดพลาด')
+                    alert_swal('error', "{{ __('status.error') }}")
                 }
             }
         });
     }
 
-    let f_delete = (code) => {
-
+    let destroy = (code) => {
         Swal.fire({
             title: "Are you sure?",
             icon: "warning",
@@ -155,37 +145,22 @@
         }).then((result) => {
             if (result.isConfirmed) {
 
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    type: "put",
-                    url: "{{ route('master_quipment.f_delete') }}",
-                    data: {
-                        code: code
-                    },
-                    dataType: "json",
-                    success: function(response) {
+                axios.delete('/quipments/' + code)
+                    .then(response => {
                         if (response.status) {
-                            tbl_equipment.ajax.reload()
-                        } else {
-                            alert_swal('error', 'เกิดข้อผิดพลาด');
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your file has been deleted.",
+                                icon: "success"
+                            });
+
+                            equipmentsTable.ajax.reload()
                         }
-                    }
-                });
-
-
-                Swal.fire({
-                    title: "Deleted!",
-                    text: "Your file has been deleted.",
-                    icon: "success"
+                    })
+                    .catch(error => {
+                        alert_swal('error', "{{ __('status.error') }}");
                 });
             }
         });
-
-
-
-
-
     }
 </script>

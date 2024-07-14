@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('pagetitle')
-    <h1 class="">Order List</h1>
+    <h1 class="">Orders</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
@@ -29,10 +29,10 @@
         </tbody>
     </table>
 
-    @include('order_list.modal.order')
-    @include('order_list.modal.view_detail')
+    @include('orders.modal.order')
+    @include('orders.modal.view_detail')
 @endsection
 
 @section('script')
-    @include('order_list.script')
+    @include('orders.script')
 @endsection

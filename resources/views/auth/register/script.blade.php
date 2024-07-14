@@ -34,7 +34,7 @@
             dataType: "json",
             success: function(response) {
                 if (response.status) {
-                    window.location.href = '/orderList'
+                    window.location.href = '/orders'
                 } else {
                    $('#display-error').empty()
                    $('#display-error').html(response.errors.email[0]).fadeIn(200).delay(2000).fadeOut(200);

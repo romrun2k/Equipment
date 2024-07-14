@@ -1,4 +1,11 @@
 @extends('layouts.app')
+@php
+    $idBtn = 'btnAddModal';
+    $idModal = 'equipmentModal';
+    $target = '#equipmentModal';
+    $btn = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="btn_save">Save</button>';
+@endphp
 
 @section('pagetitle')
     <h1 class="">Equipment List</h1>
@@ -12,10 +19,10 @@
 
 @section('content')
     <div class="text-right">
-        <button class="btn btn-primary mb-3" onclick="addModal()"> <i class="bi bi-plus-circle"></i> Add</button>
+        <x-button :id="$idBtn" :target="$target"></x-button>
     </div>
 
-    <table id="tbl_equipment" class="table table-striped table-bordered" style="width:100%">
+    <table id="equipmentsTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
                 <th class="text-center">No.</th>
@@ -30,9 +37,9 @@
         </tbody>
     </table>
 
-    @include('master_equipment.modal.equipment')
+    @include('equipments.modal.equipment')
 @endsection
 
 @section('script')
-    @include('master_equipment.script')
+    @include('equipments.script')
 @endsection
